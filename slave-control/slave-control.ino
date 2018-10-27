@@ -1,3 +1,17 @@
+/*P17310 Latch Arm Control Box
+* *** TO LOAD CODE ONTO ARDUINO MAKE SURE BLUETOOTH MODULE IS DISCONNECTED
+* This Code is for the Ardunio Inside the Latch Mechanism Control Box which is the Slave mode Bluetooth Module
+* The set up for the control box can be found in the following webpage
+   
+* http://edge.rit.edu/edge/P17310/public/Integrated%20System%20Build%20%26%20Test%20with%20Customer%20Demo
+* This Code will do the following given the following inputs from the Master Mode Arduino through Bluetooth
+if given '1' Power Relay Turns On Direction Relay Turns On
+if given '2' Power Relay Stays On and Direction Relay Turns Off
+if given '3' Both Power and Dirrection Relay Turn Off, Pressure Sensor Takes a Reading
+if given '4' DC Motor CounterClockwise Pulse
+if given '5' DC motor Clockwise Pulse
+if given '6' Stepper Motor Rotates and lifts the Latch Arm Hook, and brings it back down */
+
 #include <Wire.h>
 #include <Adafruit_MotorShield.h> //Motor Shield library
 #include "utility/Adafruit_MS_PWMServoDriver.h" //Motor Shield library
