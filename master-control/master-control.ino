@@ -1,3 +1,19 @@
+/*P17310 Latch Arm Demo For 2017 Imagine RIT
+* ******* The following code was modified from the existing code for Debouncing as seen below
+* * *** TO LOAD CODE ONTO ARDUINO MAKE SURE BLUETOOTH MODULE IS DISCONNECTED
+* **This code was used for the Demo at Imagine RIT 2017. Futher information on the exhibit got to
+ 
+* http://edge.rit.edu/edge/P17310/public/Customer%20Handoff%20%26%20Final%20Project%20Documentation
+* This Code is for the Arduino and Master Mode Bluetooth Module *
+*
+*
+Debounce
+Each time the input pin goes from LOW to HIGH (e.g. because of a push-button press), the output pin is toggled from LOW to HIGH or HIGH to LOW. There's
+a minimum delay between toggles to debounce the circuit (i.e. to ignore noise).
+by David A. Mellis modified 30 Aug 2011 by Limor Fried modified 28 Dec 2012 by Mike Walters modified 30 Aug 2016 by Arturo Guadalupi
+This example code is in the public domain.
+http://www.arduino.cc/en/Tutorial/Debounce */
+
 #define led1 8
 // constants won't change. They're used here to
 // set pin numbers:
