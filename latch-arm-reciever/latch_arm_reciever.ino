@@ -92,18 +92,20 @@ void loop() {
 
   //DC MOTOR FORWARD
   if ( state =='4') {
-    digitalWrite(hBridgeBackward, LOW); //Turn off the dc motor backward pin (collision prevention)
-    digitalWrite(hBridgeForward, HIGH); //Turn on the dc motor forward pin
+    digitalWrite(hBridgeBackward, HIGH); //Turn off the dc motor backward pin (collision prevention)
+    digitalWrite(hBridgeForward, LOW); //Turn on the dc motor forward pin
     delay(5); //Wait for five seconds
-    digitalWrite(hBridgeBackward, LOW); //Turn off the dc motor forward pin
+    digitalWrite(hBridgeBackward, HIGH); //Turn off the dc motor forward pin
+    state = 0;
   }// wait for a second
   
   //DC MOTOR BACKWARD
   if ( state =='5') {
-    digitalWrite(hBridgeForward, LOW); //Turn off the dc motor forward pin (collision prevention)
-    digitalWrite(hBridgeBackward, HIGH); //Turn on the dc motor backward pin
+    digitalWrite(hBridgeForward, HIGH); //Turn off the dc motor forward pin (collision prevention)
+    digitalWrite(hBridgeBackward, LOW); //Turn on the dc motor backward pin
     delay(5); //Wait for five seconds
-    digitalWrite(hBridgeBackward, LOW); //Turn off the dc motor backward pin
+    digitalWrite(hBridgeBackward, HIGH); //Turn off the dc motor backward pin
+    state = 0;
   }// wait for a second
 
   //Stepper motor stuff
