@@ -11,7 +11,7 @@ if given '3' Both Power and Dirrection Relay Turn Off, Pressure Sensor Takes a R
 if given '4' DC Motor CounterClockwise Pulse
 if given '5' DC motor Clockwise Pulse
 if given '6' Stepper Motor Rotates and lifts the Latch Arm Hook, and brings it back down
-Latest Revision by Joshua Yoder (jy2219@cs.rit.edu) 3/6/2019
+Latest Revision by Joshua Yoder (jy2219@rit.edu) 3/6/2019
 */
 
 #include <Wire.h>
@@ -23,26 +23,38 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield(0x61); //Address to program to 
 Adafruit_StepperMotor *myStepperMotor = AFMS.getStepper(200, 2); // stepper motor using M3 and M4 on the motor shield
 //the stepper motor is 1.8 degrees so one revolution is 200 steps
 
+//Stepper motor config
 int fsrPin = 0; // the FSR and 1M resistor pulldown are connected to a0 for pressure sensor
 int fsrReading; // the analog reading from the FSR resistor divider
 int ddirection = 12; //direction relay pin digital 12
 int dpower = 13; //power relay pin digital 13
 int state = 0;
-int hBridgeForward = 6; //pin for triggering the H Bridge forward.
-int hBridgeBackward = 11; //pin for triggering the H Bridge backward.
+
+//Main motor config
+int forwardPositive = 16;
+int forwardNegative = 17;
+int backwardPositive = 18;
+int backwardNegative = 19;
+
 
 void setup() {
-  // Setup 2 pins as OUTPUT
+  // Setup 2 pins as OUTPUT (old code but necessary for DC power)
   pinMode(ddirection, OUTPUT);
   pinMode(dpower, OUTPUT);
-  
   digitalWrite(ddirection, LOW); //direction for relay system
   digitalWrite(dpower, LOW); //power for relay system
   Serial.begin(38400); // Communication rate of the Bluetooth module has to match the Slave Mode communication Rate
-
+  
+  //Stepper motor stuff
   AFMS.begin();
   myStepperMotor->setSpeed(20); // Stepepr Motor 20 rpm
   AFMS.begin(); //frequency set at 1.6 Khz
+
+  //Main motor pin outputs
+  pinMode(forwardPositive, OUTPUT);
+  pinMode(forwardNegative, OUTPUT);
+  pinMode(backwardPositive, OUTPUT);
+  pinMode(backwardNegative, OUTPUT);
 }
 
 void loop() {
@@ -92,21 +104,25 @@ void loop() {
 
   //DC MOTOR FORWARD
   if ( state =='4') {
-    digitalWrite(hBridgeBackward, HIGH); //Turn off the dc motor backward pin (collision prevention)
-    digitalWrite(hBridgeForward, LOW); //Turn on the dc motor forward pin
-    delay(5); //Wait for five seconds
-    digitalWrite(hBridgeBackward, HIGH); //Turn off the dc motor forward pin
+    //Disable the backwards motor if applicable
+    digitalWrite(backwardPositive, HIGH);
+    digitalWrite(backwardNegative, HIGH);
+    //Enable the forwards motor
+    digitalWrite(forwardPositive, LOW);
+    digitalWrite(forwardNegative, LOW);
     state = 0;
-  }// wait for a second
+  }
   
   //DC MOTOR BACKWARD
   if ( state =='5') {
-    digitalWrite(hBridgeForward, HIGH); //Turn off the dc motor forward pin (collision prevention)
-    digitalWrite(hBridgeBackward, LOW); //Turn on the dc motor backward pin
-    delay(5); //Wait for five seconds
-    digitalWrite(hBridgeBackward, HIGH); //Turn off the dc motor backward pin
+    //Disable the forwards motor if applicable
+    digitalWrite(forwardPositive, HIGH);
+    digitalWrite(forwardNegative, HIGH);
+    //Enable the backwards motor
+    digitalWrite(backwardPositive, LOW);
+    digitalWrite(backwardNegative, LOW);
     state = 0;
-  }// wait for a second
+  }
 
   //Stepper motor stuff
   if ( state =='6') {
